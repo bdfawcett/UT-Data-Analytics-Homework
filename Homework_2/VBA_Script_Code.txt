@@ -1,0 +1,142 @@
+Sub ticker_agg()
+    
+    ' DESCRIPTION:
+    ' Script is intended to run over columns of stock data (ticker, date, open, high, low, close, and volume) for a given year.
+    ' It sums the total volume and calculates both the net change and percent change from the open to close of year in new columns.
+    ' Yearly change column is highlighted to indicate the stock is up (green) or down (red) over the year.
+    ' Tickers with the greatest % increase, % decrease, and volume are drawn from the totals columns.
+    ' Script runs on all worksheets in the workbook.
+    
+    Dim iIndex As Integer
+    Dim ws As Excel.Worksheet
+
+    Dim acc_vol As Double
+    Dim row_total As Integer
+    Dim max_rows As Long
+    Dim year_open As Double
+    Dim year_close As Double
+    Dim current_symbol As String
+    Dim first_date As Double
+    Dim new_max_rows As Long
+    Dim max_increase As Double
+    Dim max_increase_symbol As String
+    Dim max_decrease As Double
+    Dim max_decrease_symbol As String
+    Dim max_volume As Double
+    Dim max_volume_symbol As String
+    
+    ' Run on all worksheets in the workbook
+    For iIndex = 1 To ActiveWorkbook.Worksheets.Count
+        Set ws = Worksheets(iIndex)
+        ws.Activate
+        
+        ' Set initial variable values
+        year_open = 0
+        year_close = 0
+        row_total = 2
+        max_rows = Cells(Rows.Count, 1).End(xlUp).Row
+        
+        ' Set first results column headers
+        Cells(1, 9).Value = "Ticker"
+        Cells(1, 10).Value = "Yearly Change"
+        Cells(1, 11).Value = "Percent Change"
+        Cells(1, 12).Value = "Total Stock Volume"
+    
+        ' Iterate over each row up to last value
+        For i = 2 To max_rows
+            ' Replace default value with first real value
+            If year_open = 0 Then
+                year_open = Cells(i, 3).Value
+            ' Make sure earliest date is open value for symbol
+            ElseIf Cells(i, 1).Value = Cells(i - 1, 1).Value And Cells(i, 2).Value < Cells(i - 1, 2).Value Then
+                year_open = Cells(i, 3).Value
+            End If
+                
+            ' Replace default value with first real value
+            If year_close = 0 Then
+                year_close = Cells(i, 6).Value
+            ' Make sure latest date is close value for symbol
+            ElseIf Cells(i, 1).Value = Cells(i - 1, 1).Value And Cells(i, 2).Value > Cells(i - 1, 2).Value Then
+                year_close = Cells(i, 6).Value
+            End If
+                
+            ' Sum the volume over the course of the year
+            acc_vol = acc_vol + Cells(i, 7).Value
+            ' Once symbol changes, place ticker and formatted net Yearly Change in new column on corresponding row
+            If Cells(i, 1).Value <> Cells(i + 1, 1).Value Then
+                Cells(row_total, 9).Value = Cells(i, 1).Value
+                Cells(row_total, 10).Value = year_close - year_open
+                Cells(row_total, 10).NumberFormat = "$#,##0.00"
+                
+                ' Change background color of Yearly Change cell to green if increase or red if decrease
+                If Cells(row_total, 10).Value > 0 Then
+                    Cells(row_total, 10).Interior.ColorIndex = 4
+                ElseIf Cells(row_total, 10).Value < 0 Then
+                    Cells(row_total, 10).Interior.ColorIndex = 3
+                End If
+                
+                ' Avoid dividing by 0
+                If year_open = 0 Then
+                    Cells(row_total, 11).Value = 0
+                Else: Cells(row_total, 11).Value = (year_close - year_open) / year_open
+                End If
+                
+                ' Format new cells
+                Cells(row_total, 11).NumberFormat = "0.00%"
+                Cells(row_total, 12).Value = acc_vol
+                Cells(row_total, 12).NumberFormat = "#,##0"
+                ' Change to new row for next totals
+                row_total = row_total + 1
+                ' Reset variables to default
+                acc_vol = 0
+                year_open = 0
+                year_close = 0
+            End If
+        Next i
+        
+        ' Set default values for variables looking at total columns
+        new_max_rows = Cells(Rows.Count, 9).End(xlUp).Row
+        max_increase = 0
+        max_decrease = 0
+        max_volume = 0
+        
+        ' Iterate over each row up to last value in total columns
+        For new_rows = 2 To new_max_rows
+            ' Find largest increase and corresponding symbol
+            If Cells(new_rows, 11).Value > max_increase Then
+                max_increase = Cells(new_rows, 11).Value
+                max_increase_symbol = Cells(new_rows, 9).Value
+            ' Find largest decrease and corresponding symbol
+            ElseIf Cells(new_rows, 11).Value < max_decrease Then
+                max_decrease = Cells(new_rows, 11).Value
+                max_decrease_symbol = Cells(new_rows, 9).Value
+            End If
+            ' Find largest total volume and corresponding symbol
+            If Cells(new_rows, 12).Value > max_volume Then
+                max_volume = Cells(new_rows, 12).Value
+                max_volume_symbol = Cells(new_rows, 9).Value
+            End If
+        Next new_rows
+        
+        ' Set row labels for highlighted totals
+        Cells(2, 14).Value = "Greatest % Increase"
+        Cells(3, 14).Value = "Greatest % Decrease"
+        Cells(4, 14).Value = "Greatest Total Volume"
+        ' Set and format column labels and corresponding values
+        Cells(1, 15).Value = "Ticker"
+        Cells(1, 15).HorizontalAlignment = xlCenter
+        Cells(2, 15).Value = max_increase_symbol
+        Cells(3, 15).Value = max_decrease_symbol
+        Cells(4, 15).Value = max_volume_symbol
+        Cells(1, 16).Value = "Value"
+        Cells(1, 16).HorizontalAlignment = xlCenter
+        Cells(2, 16).Value = max_increase
+        Cells(2, 16).NumberFormat = "0.00%"
+        Cells(3, 16).Value = max_decrease
+        Cells(3, 16).NumberFormat = "0.00%"
+        Cells(4, 16).Value = max_volume
+        Cells(4, 16).NumberFormat = "#,##0"
+    Next iIndex
+End Sub
+
+
