@@ -1,0 +1,108 @@
+/*
+ Latitude Homework External CSS Stylesheet
+ */
+
+/* Styling for HTML elements */
+body {
+  padding: 0;
+  margin: 0;
+  font-family: Georgia, "Times New Roman", Times, serif;
+  font-size: 18px;
+  line-height: 150%;
+  color: #333;
+  background: #FFFFFF;
+}
+
+h1 {
+  padding: 20px 0;
+  margin: 0;
+  margin-bottom: 20px;
+  font-size: 28px;
+  font-weight: bold;
+  color: #00CED1;
+  text-align: left;
+}
+
+h2 {
+  font-size: 24px;
+  font-weight: bold;
+  color: #FFFFFF;
+  text-align: left;
+}
+
+h3 {
+  font-size: 24px;
+  font-weight: bold;
+  color: #00CED1;
+  text-align: left;
+}
+
+header {
+  background: #00CED1;
+  color: FFFFFF
+}
+
+/* Selecting elements by class */
+container {
+  width: 1024px;
+  margin: 0 auto;
+  background: #00CED1;
+}
+
+/* Selecting elements by ID */
+#main-landing,
+#visualizations,
+#landing-image {
+  float: left;
+}
+
+#figure {
+  position: relative;
+}
+
+#main-landing {
+  width: 70%;
+}
+
+#visualizations {
+  width: 30%;
+}
+
+#landing-image {
+  width: 200px;
+  height: 200px;
+  margin-right: 20px;
+}
+
+#comparisons-image {
+  width: 700px;
+  height: 500px;
+  margin-right: 20px;
+}
+
+/* Giving our navbar some padding and a background color */
+.navbar {
+  padding: 10px;
+  background: #FFFFFF;
+  float: right;
+}
+
+/* Making our navbar li's inline-block elements this makes it so we can have multiple on the same line. Floats could have been used too */
+.navbar li,
+#nav-select {
+  display: inline-block;
+  padding: 10px;
+  margin-right: 10px;
+  margin-left: 10px;
+  cursor: pointer;
+  background: #fff;
+  border: none;
+  font-size: 14px;
+  /*border-radius: 3px;*/
+}
+
+/* Getting rid of the default link styles here */
+.navbar li a {
+  color: #000;
+  text-decoration: none;
+}

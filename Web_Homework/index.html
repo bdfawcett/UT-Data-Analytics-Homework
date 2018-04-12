@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+
+	<meta charset="UTF-8">
+	<title>Bootstrap Visualization Dashboard</title>
+	<link rel="stylesheet" href="reset.css">
+	<link rel="stylesheet" type="text/css" href="style.css">
+   
+
+</head>
+
+<body>
+	<!-- Creates the Overall Grid -->
+	<div class="container">
+		<header class="header">
+			<h2>Latitude</h2>
+			<nav class="navbar">
+
+				<ul>
+					<select name="list" id="nav-select">
+						<option value="plots" selected>Plots</option>
+						<option value="temperature.html">Temperature</option>
+						<option value="humidity.html">Humidity</option>
+						<option value="cloudiness.html">Cloudiness</option>
+						<option value="windspeed.html">Wind Speed</option>
+					</select>
+					<li>
+						<a href="comparisons.html">Comparison</a>
+					</li>
+					<li>
+						<a href="#">Data</a>
+					</li>
+				</ul>
+				<div class="clearfix"></div>
+			</nav>
+		</header>
+		<section id="main-landing">
+			<h1 align="left">Summary: Latitude vs X</h1>
+			<section id="figure">
+				<img id="landing-image" src="TemperatureInWorldCities.png" alt="Temperature vs latitude chart">
+			</section>
+			<p>The purpose of this project was to analyze how weather changes as you get closer to the equator.  To accomplish this analysis, we first pulled data from the OpenWeatherMap API to assemble a dataset on over 500 cities.</p>
+			<br>
+			<p>After assembling the dataset, we used Matplotlib to plot various aspects of the weather vs. latitude.  Factors we looked at included:  temperature, cloudiness, wind speed, and humidity.  This site provides the source data and visualizations created as part of the analysis, as well as explainations and descriptions of any trends and correlations witnessed.</p>
+		</section>
+
+		<aside id="visualizations">
+			<h3>Visualizations</h3>
+			<section id="figure">
+				<img id="landing-image" src="TemperatureInWorldCities.png" alt="Temperature vs latitude chart"><img id="landing-image" src="HumidityInWorldCities.png" alt="Humidity vs latitude chart"><br>
+				<img id="landing-image" src="CloudinessInWorldCities.png" alt="Cloudiness vs latitude chart"><img id="landing-image" src="WindSpeedInWorldCities.png" alt="Wind speed vs latitude chart">
+			</section>
+		</aside>
+		
+	</div>
+
+</body>
+
+</html>
